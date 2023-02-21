@@ -2,7 +2,13 @@
 
 @section('content')
     <section class="container">
-
+        <div class="row">
+            @if (session('message'))
+                <div class="alert alert-{{ session('alert-type') }}">
+                    {{ session('message') }}
+                </div>
+            @endif
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -11,7 +17,7 @@
                     <th scope="col">Author</th>
                     <th scope="col">Date</th>
                     <th scope="col">
-                      <a href="{{ route('admin.projects.create') }}" class="btn btn-secondary">Create new project</a>
+                        <a href="{{ route('admin.projects.create') }}" class="btn btn-secondary">Create new project</a>
                     </th>
                 </tr>
             </thead>
@@ -23,9 +29,14 @@
                         <td>{{ $project->author }}</td>
                         <td>{{ $project->date }}</td>
                         <td>
-                          <a href="{{ route('admin.projects.show', $project) }}" class="btn btn-primary">Show</a>
-                          <a href="" class="btn btn-success">Edit</a>
-                          <a href="" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('admin.projects.show', $project) }}" class="btn btn-primary">Show</a>
+                            <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-success">Edit</a>
+                            <form class="d-inline form-deleter" action="{{ route('admin.projects.destroy', $project->id) }}"
+                                method="POST" data-element-name="{{ $project->title }}">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
@@ -33,4 +44,8 @@
             </tbody>
         </table>
     </section>
+@endsection
+
+@section('scripts')
+    @vite(['resources/js/AlertFormDelete.js'])
 @endsection
