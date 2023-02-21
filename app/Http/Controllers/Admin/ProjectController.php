@@ -10,6 +10,17 @@ use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
+    public function GetValidated($request){
+        return $request->validate([
+            'title' => 'required|string|min:2|max:50',
+            'author' => 'required|string|min:2|max:50',
+            'image' => 'required|url|max:255',
+            'content' => 'required|min:10',
+            'date' => 'required|string|min:2|max:20',
+        ]);
+    }
+
+    
     /**
      * Display a listing of the resource.
      *
@@ -39,15 +50,18 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-
+        $this->GetValidated($request);
+        
         $data = $request->all();
         $newProject = new Project();
+
         $data['author'] = Auth::user()->name;
-        $data['slug'] = Str::slug($newProject->title);
+        $data['slug'] = Str::slug($newProject['title']);
+
         $newProject->fill($data);
         $newProject->save();
 
-        return redirect()->route('admin.projects.index', $newProject->id);
+        return redirect()->route('admin.projects.show', $newProject->id)->with('message', "$newProject->title has been created")->with('alert-type', 'info');
     }
 
     /**
@@ -81,7 +95,7 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->GetValidated($request);
     }
 
     /**
