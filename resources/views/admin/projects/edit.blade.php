@@ -41,6 +41,10 @@
                             <label for="date" class="form-label">Date</label>
                             <input type="date" class="form-control" id="date" name="date" value="{{ old('date', $project->date) }}">
                     </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Author</label>
+                        <input type="author" class="form-control" id="author" name="author" value="{{ Auth::user()->name }}">
+                    </div>
                     <button type="submit" class="btn btn-secondary">Create new project</button>
                     </form>
 

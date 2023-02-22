@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Models\User;
+
+
 
 class ProjectController extends Controller
 {
@@ -28,8 +32,10 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::all();
-        return view('admin.projects.index', compact('projects'));
+        $projects = Project::paginate(10);
+        return view('admin.projects.index', compact('projects'), 
+        // ['projects' => DB::table('projects')->paginate(15)]
+    );
     }
 
     /**
@@ -96,6 +102,17 @@ class ProjectController extends Controller
     public function update(Request $request, $id)
     {
         $this->GetValidated($request);
+        
+        $data = $request->all();
+        $newProject = new Project();
+
+        $data['author'] = Auth::user()->name;
+        $data['slug'] = Str::slug($newProject['title']);
+
+        $newProject->fill($data);
+        $newProject->save();
+
+        return redirect()->route('admin.projects.show', $newProject->id)->with('message', "$newProject->title has been modified")->with('alert-type', 'success');
     }
 
     /**

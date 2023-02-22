@@ -25,19 +25,23 @@
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" name="title">
+                        <input type="text" class="form-control" id="title" name="title" value="{{ old('title')}}">
                     </div>
                     <div class="mb-3">
                         <label for="content" class="form-label">Content</label>
-                        <textarea class="form-control" id="content" rows="10" name="content"></textarea>
+                        <textarea class="form-control" id="content" rows="10" name="content">{{ old('content')}}</textarea>
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Image url</label>
-                        <input type="text" class="form-control" id="image" name="image">
+                        <input type="text" class="form-control" id="image" name="image" value="{{ old('image')}}">
                     </div>
                     <div class="mb-3">
                         <label for="date" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="date" name="date">
+                        <input type="date" class="form-control" id="date" name="date" value="{{ old('date')}}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Author</label>
+                        <input type="author" class="form-control" id="author" name="author" value="{{ Auth::user()->name }}">
                     </div>
                     <button type="submit" class="btn btn-secondary">Create new project</button>
                 </form>

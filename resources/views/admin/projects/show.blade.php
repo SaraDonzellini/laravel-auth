@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <img src="{{ $project->image }}" class="card-img-top" alt="{{ $project->title }}">
+                    <img src="{{ $project->image }}" class="card-img-top img-fluid" alt="{{ $project->title }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ $project->title }}</h5>
                         <p class="card-text">{{ $project->content }}</p>
