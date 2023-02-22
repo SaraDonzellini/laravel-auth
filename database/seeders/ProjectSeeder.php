@@ -18,11 +18,11 @@ class ProjectSeeder extends Seeder
      */
     public function run(Faker $faker)
     {
-        for ($i=0; $i < 10; $i++) { 
+        for ($i = 0; $i < 800; $i++) {
             $newProject = new Project();
-            $newProject->title = $faker->unique()->sentence(4);
+            $newProject->title = $faker->unique()->realText(10);
             $newProject->slug = Str::slug($newProject->title);
-            $newProject->author = $faker->sentence(4);
+            $newProject->author = $faker->name();
             $newProject->image = $faker->imageUrl(640, 480, 'animals', true);
             $newProject->content = $faker->realTextBetween(1600, 3000);
             $newProject->date = $faker->dateTimeThisYear();

@@ -31,7 +31,7 @@
                     <div class="mb-3">
                         <label for="content" class="form-label">Content</label>
                         <textarea class="form-control" id="content" rows="10" name="content"
-                            value="{{ old('content', $project->content) }}"></textarea>
+                            >{{ old('content', $project->content) }}</textarea>
                     </div>
                     <div class="mb-3">
                             <label for="image" class="form-label">Image url</label>
