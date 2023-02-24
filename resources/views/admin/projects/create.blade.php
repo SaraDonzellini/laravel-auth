@@ -21,7 +21,7 @@
                 </h1>
             </div>
             <div class="col-12">
-                <form action="{{ route('admin.projects.store') }}" method="POST">
+                <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
@@ -32,8 +32,8 @@
                         <textarea class="form-control" id="content" rows="10" name="content">{{ old('content')}}</textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="image" class="form-label">Image url</label>
-                        <input type="text" class="form-control" id="image" name="image" value="{{ old('image')}}">
+                        <label for="image" class="form-label">Image</label>
+                        <input type="file" class="form-control" id="image" name="image" value="{{ old('image')}}">
                     </div>
                     <div class="mb-3">
                         <label for="date" class="form-label">Date</label>

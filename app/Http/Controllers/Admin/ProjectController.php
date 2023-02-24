@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\User;
 
@@ -18,7 +18,7 @@ class ProjectController extends Controller
         return $request->validate([
             'title' => 'required|string|min:2|max:50',
             'author' => 'required|string|min:2|max:50',
-            'image' => 'required|url|max:255',
+            'image' => 'required|image|max:350',
             'content' => 'required|min:10',
             'date' => 'required|string|min:2|max:20',
         ]);
@@ -63,7 +63,7 @@ class ProjectController extends Controller
 
         $data['author'] = Auth::user()->name;
         $data['slug'] = Str::slug($newProject['title']);
-
+        $img_path = Storage::put('uploads', $data['image']);
         $newProject->fill($data);
         $newProject->save();
 
