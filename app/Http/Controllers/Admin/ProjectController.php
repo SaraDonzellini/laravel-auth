@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\User;
-
-
+use League\Flysystem\StorageAttributes;
 
 class ProjectController extends Controller
 {
@@ -63,7 +62,7 @@ class ProjectController extends Controller
 
         $data['author'] = Auth::user()->name;
         $data['slug'] = Str::slug($newProject['title']);
-        $img_path = Storage::put('uploads', $data['image']);
+        $data['image'] = Storage::put('uploads', $data['image']);
         $newProject->fill($data);
         $newProject->save();
 
@@ -99,9 +98,19 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
         $this->GetValidated($request);
+        
+        if ($request->hasFile('image')) {
+            
+            if (!str_starts_with($project->image, 'http')){
+                Storage::delete($project->image);
+            }
+
+            $data['image'] = Storage::put('uploads', $data['image']);
+        }
+
         
         $data = $request->all();
         $newProject = new Project();
@@ -123,6 +132,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if (!str_starts_with($project->image, 'http')) {
+            Storage::delete($project->image);
+        }
         $project->delete();
         return redirect()->route('admin.projects.index', compact('project'))->with('message', "$project->title has been deleted")->with('alert-type', 'danger');
     }
